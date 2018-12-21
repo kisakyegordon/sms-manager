@@ -13,8 +13,8 @@ const smsSchema = new Schema({
         type: Number
     },
     status:{
-        type: Boolean,
-        default: false
+        type: String,
+        enum: ['sent', 'read']
     },
     sent_date:{
         type: Date,

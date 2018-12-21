@@ -1,4 +1,5 @@
 import Contact from '../models/Contact';
+import Sms from '../models/Sms';
 
 
 // get all messages
@@ -37,6 +38,41 @@ export function getContact(req, res, next) {
         }
         res.status(200).json({ contact });
     })
+}
+
+
+
+// delete contact
+export function deleteContact(req, res, next) {
+
+    const id = req.params.id;
+    let phoneNumber;
+
+    // pick phone from contact
+    console.log("before", phoneNumber)
+    Contact.findOne( {_id:id}, 'phone', (err,phone) => {
+        if (err) return err;
+        // @ts-ignore
+        phoneNumber = phone.phone;
+        console.log("Inside findone", phoneNumber)
+        Sms.updateMany( {receiver: phoneNumber}, {$set: { receiver:-1 } }, {multi: true}, (err) => {
+        if(err) return err;
+        });
+        // delete sent messages
+        Sms.deleteMany( {sender: phoneNumber }, (err) => {
+        if(err) return err;
+        res.status(200).json({ message:"Messages sent by contact, successfully deleted"});
+    });
+
+    })
+
+    // delete sent messages
+    Sms.deleteMany( {sender: phoneNumber }, (err) => {
+        console.log("Inside Delete", phoneNumber)
+        if(err) return err;
+        // res.status(200).json({ message:"Messages sent by contact, successfully deleted"});
+    });
+
 }
 
 // create a user
