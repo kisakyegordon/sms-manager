@@ -37,9 +37,8 @@ What things you need to install the software and how to install them
     Run yarn start, to start the API
 
 
-# REST API
+# API Routes
 
-The REST API to the example app is described below.
 
 ## Get list of Things
 
