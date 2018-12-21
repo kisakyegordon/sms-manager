@@ -1,7 +1,7 @@
 import * as express from 'express';
 import { getAllPosts, getPostById, createPost, updatePost, deletePost } from '../controllers/PostController';
-import { sendSms, getSmsByNumber } from '../controllers/SmsController';
-import { createContact, getContact, getAllContacts } from '../controllers/ContactController';
+import { sendSms, getSmsByNumber, getSmsById } from '../controllers/SmsController';
+import { createContact, getContact, getAllContacts, deleteContact } from '../controllers/ContactController';
 
 
 
@@ -34,7 +34,7 @@ export default (app) => {
     postRoutes.delete('/:id', deletePost)
 
 /*****************************
-    ===users routes ====
+    === contact routes ====
 ******************************/
 
     // create a user
@@ -46,6 +46,9 @@ export default (app) => {
     // get user
     apiRoutes.get('/contact/:phone', getContact);
 
+    // delete user
+    apiRoutes.delete('/contact/:id', deleteContact);
+
 /*****************************
     === message routes ====
 ******************************/
@@ -53,8 +56,11 @@ export default (app) => {
     //send message
     apiRoutes.post('/sms/:phone', sendSms);
 
+    // get single message
+    apiRoutes.get('/sms/:id', getSmsById);
+
     //get all messages
-    apiRoutes.get('/sms/:phone', getSmsByNumber);
+    apiRoutes.get('/sms/all/:phone', getSmsByNumber);
 
     // append all routes to app
     app.use('/api', apiRoutes);
