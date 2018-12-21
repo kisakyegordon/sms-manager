@@ -44,7 +44,7 @@ export default (app) => {
     apiRoutes.get('/contact', getAllContacts);
 
     // get user
-    apiRoutes.get('/contact/:phone', getContact);
+    apiRoutes.get('/contact/:id', getContact);
 
     // delete user
     apiRoutes.delete('/contact/:id', deleteContact);
@@ -63,7 +63,7 @@ export default (app) => {
     apiRoutes.get('/sms/all/:phone', getSmsByNumber);
 
     // append all routes to app
-    app.use('/api', apiRoutes);
+    app.use('/api/v1', apiRoutes);
 
 
 }

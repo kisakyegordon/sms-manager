@@ -2,18 +2,26 @@ import Contact from '../models/Contact';
 import Sms from '../models/Sms';
 
 
-// get all messages
-// export function getMessageById(req, res, next) {
+// create a user
+export  function createContact(req, res, next){
+    const name = req.body.name;
+    const phoneNumber = req.body.phone;
 
-//     const id = req.params.id;
-//     Messages.find({receiver: id}, (err, messages) => {
-//         if(err) {
-//             res.status(500).json({ err });
-//         }
-//         res.status(200).json({ messages });
-//     })
-// }
+    if (!name){
+        res.status(422).json({ error: "name is required" })
+    }
+    if (!phoneNumber){
+        res.status(422).json({ error:"Phone Number is required" })
+    }
 
+    const user = new Contact( req.body )
+    user.save((err, user) => {
+        if (err){
+            res.status(500).json({err});
+        }
+        res.status(201).json({ "status":"Success", "data":user, "message": "Successfully added contact"})
+    });
+}
 
 // get all contacts
 export function getAllContacts(req, res, next) {
@@ -30,8 +38,8 @@ export function getAllContacts(req, res, next) {
 // get contact
 export function getContact(req, res, next) {
 
-    const phoneNumber = req.params.phone;
-    Contact.find({phone: phoneNumber}, (err, contact) => {
+    const id = req.params.id;
+    Contact.findById(id, (err, contact) => {
 
         if(err) {
             res.status(500).json({ err });
@@ -40,9 +48,10 @@ export function getContact(req, res, next) {
     })
 }
 
-
-
 // delete contact
+/**
+This also goes ahead to delete all messages a contact sent and also updates references to the messages they received
+ */
 export function deleteContact(req, res, next) {
 
     const id = req.params.id;
@@ -61,37 +70,7 @@ export function deleteContact(req, res, next) {
         // delete sent messages
         Sms.deleteMany( {sender: phoneNumber }, (err) => {
         if(err) return err;
-        res.status(200).json({ message:"Messages sent by contact, successfully deleted"});
-    });
-
+        res.status(200).json({ "status":"Success", "message":"Contact deleted, referenced messages updated"});
+        });
     })
-
-    // delete sent messages
-    Sms.deleteMany( {sender: phoneNumber }, (err) => {
-        console.log("Inside Delete", phoneNumber)
-        if(err) return err;
-        // res.status(200).json({ message:"Messages sent by contact, successfully deleted"});
-    });
-
-}
-
-// create a user
-export  function createContact(req, res, next){
-    const name = req.body.name;
-    const phoneNumber = req.body.phone;
-
-    if (!name){
-        res.status(422).json({ error: "name is required" })
-    }
-    if (!phoneNumber){
-        res.status(422).json({ error:"Phone Number is required" })
-    }
-
-    const user = new Contact( req.body )
-    user.save((err, user) => {
-        if (err){
-            res.status(500).json({err});
-        }
-        res.status(201).json({user})
-    });
 }
