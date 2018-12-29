@@ -39,13 +39,22 @@ What things you need to install the software and how to install them
 
 # API Routes
 
+| No        | End Point        | Method   | Functionality  |
+| ------------- |:-------------:| -----:|-----:|
+| 1     | /api/v1/contact  | POST | Adds a new contact |
+| 2     | /api/v1/contact  | GET | Get all contacts |
+| 3     | /api/v1/contact/:id  |GET | Get a single contact |
+| 4     | /api/v1/contact/:id  | DELETE | Delete a single contact |
+| 5     | /api/v1/sms/:phone  | POST | Sends an SMS Message |
+| 6     | /api/v1/sms/:id | GET | Get a single sms message |
+| 7     | /api/v1/sms/all/:phone  |GET | Get all messages for a single contact |
 
-## Get list of Things
+
 
 
 ## Create a Contact
 
-Send a `POST` request to the endpoint below, to add a
+Send a `POST` request to the endpoint below, to add a contact
 
 ```
     /api/v1/contact
@@ -144,7 +153,8 @@ Send a `DELETE` request to the endpoint below
 
 ## Send Sms Message
 
-Send a `POST` request to the endpoint below
+Send a `POST` request to the endpoint below, to send an sms message.
+- When an sms is sent, its default status is `sent`, after a user  retrieves alone, the status is updated to `read`.
 
 ```
     /api/v1/sms/:phone
